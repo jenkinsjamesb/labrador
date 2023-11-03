@@ -2,7 +2,7 @@ version: '3'
 
 services:
   agent:
-    image: 'portainer/agent:2.18.4'
+    image: 'portainer/agent:latest'
     container_name: portainer_agent
     volumes:
       - '/var/run/docker.sock:/var/run/docker.sock'
