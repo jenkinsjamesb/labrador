@@ -18,8 +18,8 @@ services:
     volumes:
       - /mnt/media/jellyfin-config:/config
       - /mnt/media/jellyfin-cache:/cache
-      - /mnt/media/jellyfin-media/Music:/media/Music
-      - /mnt/media/jellyfin-media/Movies:/media/Movies
+      - /media/jellyfin-media/music:/media/Music
+      - /media/jellyfin-media/movies:/media/Movies
     restart: 'unless-stopped'
   calibre-web:
     image: lscr.io/linuxserver/calibre-web:latest
