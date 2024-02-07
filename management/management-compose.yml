@@ -2,7 +2,7 @@ version: '3'
 
 services:
   portainer:
-    image: portainer/portainer-ce
+    image: portainer/portainer-ce:latest
     container_name: portainer
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
@@ -12,7 +12,7 @@ services:
     restart: always
 
   tailscale:
-    image: tailscale/tailscale
+    image: tailscale/tailscale:latest
     container_name: tailscaled
     network_mode: host
     environment:
