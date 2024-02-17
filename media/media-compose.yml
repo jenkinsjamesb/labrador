@@ -14,7 +14,6 @@ services:
     image: jellyfin/jellyfin
     container_name: jellyfin
     network_mode: 'host'
-    user: 1000:1000
     volumes:
       - /mnt/media/jellyfin-config:/config
       - /mnt/media/jellyfin-cache:/cache
