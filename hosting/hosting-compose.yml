@@ -42,5 +42,7 @@ services:
       MAX_TICK_TIME: "-1"
       JVM_DD_OPTS: "disable.watchdog:true"
       SNOOPER_ENABLED: false
+      UID: 1000
+      GID: 1000
     volumes:
       - "/media/hosting-datastore/minecraft/data:/data"
