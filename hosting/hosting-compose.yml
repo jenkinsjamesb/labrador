@@ -38,11 +38,11 @@ services:
       VIEW_DISTANCE: 24
       MEMORY: "8G"
       ENABLE_ROLLING_LOGS: true
-      ENABLE_AUTOPAUSE: true
+      #ENABLE_AUTOPAUSE: true
       MAX_TICK_TIME: "-1"
       JVM_DD_OPTS: "disable.watchdog:true"
       SNOOPER_ENABLED: false
-      UID: 1000
-      GID: 1000
+      #UID: 1000
+      #GID: 1000
     volumes:
       - "/media/hosting-datastore/minecraft/data:/data"
