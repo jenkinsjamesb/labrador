@@ -39,7 +39,6 @@ services:
       MEMORY: "8G"
       ENABLE_ROLLING_LOGS: true
       ENABLE_AUTOPAUSE: true
-      DEBUG_AUTOPAUSE: true
       MAX_TICK_TIME: "-1"
       JVM_DD_OPTS: "disable.watchdog:true"
       SNOOPER_ENABLED: false
