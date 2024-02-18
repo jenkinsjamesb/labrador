@@ -20,7 +20,6 @@ services:
 	#		options:
 	#			max-size: 1g
 	#	restart: always
-
  crafty:
     container_name: crafty_container
     image: registry.gitlab.com/crafty-controller/crafty-4:latest
