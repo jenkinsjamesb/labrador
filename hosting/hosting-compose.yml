@@ -33,8 +33,7 @@ services:
       TYPE: "PAPER"
       VERSION: "1.20.4"
       REMOVE_OLD_MODS: true
-      PLUGINS:
-        - "https://github.com/playit-cloud/playit-minecraft-plugin/releases/latest/download/playit-minecraft-plugin.jar"
+      PLUGINS: "https://github.com/playit-cloud/playit-minecraft-plugin/releases/latest/download/playit-minecraft-plugin.jar"
       DIFFICULTY: "hard"
       MEMORY: "4G"
       ENABLE_ROLLING_LOGS: true
