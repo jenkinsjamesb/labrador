@@ -35,7 +35,8 @@ services:
       REMOVE_OLD_MODS: true
       PLUGINS: "https://github.com/playit-cloud/playit-minecraft-plugin/releases/latest/download/playit-minecraft-plugin.jar"
       DIFFICULTY: "hard"
-      MEMORY: "4G"
+      VIEW_DISTANCE: 24
+      MEMORY: "8G"
       ENABLE_ROLLING_LOGS: true
       ENABLE_AUTOPAUSE: true
       SNOOPER_ENABLED: false
