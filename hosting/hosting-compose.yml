@@ -40,4 +40,4 @@ services:
       ENABLE_AUTOPAUSE: true
       SNOOPER_ENABLED: false
     volumes:
-      - "media/hosting-datastore/minecraft/data:/data"
+      - "/media/hosting-datastore/minecraft/data:/data"
