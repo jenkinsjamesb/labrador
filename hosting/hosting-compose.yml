@@ -22,7 +22,7 @@ services:
 	#	restart: always
  crafty:
     container_name: crafty_container
-    image: registry.gitlab.com/crafty-controller/crafty-4:latest
+    image: arcadiatechnology/crafty-4:latest
     restart: always
     environment:
         - TZ=Etc/UTC
