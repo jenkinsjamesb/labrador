@@ -39,6 +39,6 @@ services:
       MEMORY: "4G"
       ENABLE_ROLLING_LOGS: true
       ENABLE_AUTOPAUSE: true
-      SNOOPER_ENABLED: flase
+      SNOOPER_ENABLED: false
     volumes:
       - "media/hosting-datastore/minecraft/data:/data"
