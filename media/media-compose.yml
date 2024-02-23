@@ -20,7 +20,7 @@ services:
       - /media/jellyfin-media/music:/media/Music
       - /media/jellyfin-media/movies:/media/Movies
     restart: 'unless-stopped'
-  calibre-web:
+ calibre-web:
     image: lscr.io/linuxserver/calibre-web:latest
     container_name: calibre-web
     environment:
@@ -29,19 +29,21 @@ services:
       - TZ=Etc/UTC
       - DOCKER_MODS=linuxserver/mods:universal-calibre #optional
       - OAUTHLIB_RELAX_TOKEN_SCOPE=1 #optional
-#    volumes:
-#      - /path/to/data:/config
-#      - /path/to/calibre/library:/books
+    volumes:
+      - /media/calibre-media/config:/config
+      - /media/calibre-media/library:/books
     ports:
       - 8083:8083
     restart: unless-stopped
-  filebrowser:
-    image: filebrowser/filebrowser
-    container_name: filebrowser
-#    volumes:
-#      - '/path/to/root:/srv'
-#      - '/path/filebrowser.db:/database.db'
-#      - '/path/.filebrowser.json:/.filebrowser.json'
+  nextcloud-aio:
+    container_name: nextcloud-aio-mastercontainer
+    restart: always
     ports:
-      - '8080:80'
+        - 80:80
+        - 8080:8080
+        - 8443:8443
+    volumes:
+        - /media/nextcloud-datastore:/mnt/docker-aio-config
+        - /var/run/docker.sock:/var/run/docker.sock:ro
+    image: nextcloud/all-in-one:latest
     restart: always
