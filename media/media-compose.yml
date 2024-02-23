@@ -20,7 +20,7 @@ services:
       - /media/jellyfin-media/music:/media/Music
       - /media/jellyfin-media/movies:/media/Movies
     restart: 'unless-stopped'
- calibre-web:
+  calibre-web:
     image: lscr.io/linuxserver/calibre-web:latest
     container_name: calibre-web
     environment:
@@ -37,7 +37,6 @@ services:
     restart: unless-stopped
   nextcloud-aio:
     container_name: nextcloud-aio-mastercontainer
-    restart: always
     ports:
         - 80:80
         - 8080:8080
