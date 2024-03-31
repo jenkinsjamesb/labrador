@@ -46,3 +46,4 @@ services:
       #GID: 1000
     volumes:
       - "/media/hosting-datastore/minecraft/data:/data"
+    restart: always
