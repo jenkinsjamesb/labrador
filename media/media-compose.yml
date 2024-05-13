@@ -17,24 +17,8 @@ services:
     volumes:
       - /mnt/media/jellyfin-config:/config
       - /mnt/media/jellyfin-cache:/cache
-      - /media/jellyfin-media/music:/media/Music
-      - /media/jellyfin-media/movies:/media/Movies
+      - $JELLYFIN_MEDIA_PATH:/media
     restart: 'unless-stopped'
-  calibre-web:
-    image: lscr.io/linuxserver/calibre-web:latest
-    container_name: calibre-web
-    environment:
-      - PUID=1000
-      - PGID=1000
-      - TZ=Etc/UTC
-      - DOCKER_MODS=linuxserver/mods:universal-calibre #optional
-      - OAUTHLIB_RELAX_TOKEN_SCOPE=1 #optional
-    volumes:
-      - /media/calibre-media/config:/config
-      - /media/calibre-media/library:/books
-    ports:
-      - 8083:8083
-    restart: unless-stopped
   nextcloud-aio:
     container_name: nextcloud-aio-mastercontainer
     ports:
@@ -42,7 +26,13 @@ services:
         - 8080:8080
         - 8443:8443
     volumes:
-        - /media/nextcloud-datastore/nextcloud_aio_mastercontainer:/mnt/docker-aio-config
+        - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
         - /var/run/docker.sock:/var/run/docker.sock:ro
+    environment:
+        NEXTCLOUD_DATADIR: $NEXTCLOUD_DATADIR
     image: nextcloud/all-in-one:latest
     restart: always
+    
+volumes:
+  nextcloud_aio_mastercontainer:
+    name: nextcloud_aio_mastercontainer
