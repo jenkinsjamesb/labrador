@@ -6,7 +6,7 @@ Repository of the docker components and documentation of my current homelab setu
 The hostnames of each server are set in /etc/hosts & /etc/hostname, and static IPs are set in the file in /etc/netplan/. The goal of this repository is to provide a portable template for building out a homelab virtual environment, as well as to provide documentation on some of the nitty gritties of the setup process.
 
 <h3>what (and how) are we deploying?</h3>
-Labrador is the nickname of a Proxmox cluster of 2 Dell PowerEdge R620s, providing a pool of 64 threads, 256 GiB of RAM, around 8TiB of usuable storage in RAID 5, and 2 Nvidia Quadro K1200s for good measure. This is beyond overkill, and could likely be done with one or two SBCs, but I like to keep it futureproof.
+Labrador is the nickname of a Proxmox cluster of 2 Dell PowerEdge R620s, providing a pool of 64 threads, 256 GiB of RAM, around 6TiB of usuable storage in RAID 5, and 2 Nvidia Quadro K1200s for good measure. This is beyond overkill, and could likely be done with one or two SBCs, but I like to keep it futureproof.
 
 The subdirectories provided each correspond to a cloned docker host, a VM running Ubuntu Server LTS configured with hostnames matching their directories and their static IPv4 address' least significant bits match their VM IDs in Proxmox (e.g. the media directory docker config is running on VM 102 "labrador-media" @ xxx.xxx.xxx.102). Other self-hosting methods are used, however, such as a TrueNAS Scale VM for managing large blocks of storage, an OPNSense VM providing networking services, and a Windows Server VM hosting various game servers.
 
