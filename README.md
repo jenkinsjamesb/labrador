@@ -1,5 +1,7 @@
 # Labrador
 
+<img src="https://jenkinsjamesb.github.io/src/images/zeke.jpg" width="33%"><img src="https://jenkinsjamesb.github.io/src/images/heep.jpg" width="33%"><img src="https://jenkinsjamesb.github.io/src/images/luke.jpg" width="33%">
+
 Repository of the docker components and documentation of my current homelab setup, cloned onto each Docker host in ProxmoxVE, with a crontab addition in each invoking start.sh at reboot.
 The hostnames of each server are set in /etc/hosts & /etc/hostname, and static IPs are set in the file in /etc/netplan/. The goal of this repository is to provide a portable template for building out a homelab virtual environment, as well as to provide documentation on some of the nitty gritties of the setup process.
 
@@ -56,4 +58,11 @@ The testenv VM is simply a remote development and testing environment used for s
 <h5>opnsense (opnsense @ 192 - OPNsense)</h5>
 OPNsense is my choice of routing software, as it supports VLANs and allows me to use my cheap TPLink router as a simple access point, while leveraging OPNsense's rich featureset to do all of the important stuff. While it has a learning curve, it's certainly worth the effort for the homelab environment.
 
+<h3>to do (in no particular order):</h3>
+<ul>
+  <li>Get rid of the hosting subdirectory, and document some better ways to host miscellaneous services.</li>
+  <li>Drop NextCloud and replace with something simpler and easier to deploy.</li>
+  <li>Document VLAN setup and management for an isolated homelab network.</li>
+  <li>Find a cheap 4u rackmount case and add more compute power to the cluster.</li>
+</ul>
 
