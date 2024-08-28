@@ -1,3 +1,4 @@
+![Maintenance Status](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
 # Labrador
 
 <img src="https://jenkinsjamesb.github.io/src/images/zeke.jpg" width="33%"><img src="https://jenkinsjamesb.github.io/src/images/heep.jpg" width="33%"><img src="https://jenkinsjamesb.github.io/src/images/luke.jpg" width="33%">
