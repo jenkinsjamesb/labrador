@@ -61,9 +61,13 @@ OPNsense is my choice of routing software, as it supports VLANs and allows me to
 
 <h3>to do (in no particular order):</h3>
 <ul>
+  <li>Configure Traefik as a reverse proxy to assign subdomains to services.</li>
+  <li>Configure Homer for a clean homelab landing page.</li>
   <li>Get rid of the hosting subdirectory, and document some better ways to host miscellaneous services.</li>
   <li>Drop NextCloud and replace with something simpler and easier to deploy.</li>
   <li>Document VLAN setup and management for an isolated homelab network.</li>
   <li>Find a cheap 4u rackmount case and add more compute power to the cluster.</li>
+  <li>Think about some other options for bare metal, look into Warewulf.</li>
+  <li>figure out another method for storage other than TrueNAS, maybe an NFS hosted on a node.</li>
 </ul>
 
