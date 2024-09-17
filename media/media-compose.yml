@@ -26,6 +26,7 @@ services:
       - 8080:80
     volumes:
       - $FILESHARE_DATA_PATH/srv:/srv
+      - $FILESHARE_DATA_PATH/branding:/branding
       - $FILESHARE_DATA_PATH/database.db:/database.db
       - $FILESHARE_DATA_PATH/.filebrowser.json:/.filebrowser.json
     restart: always
