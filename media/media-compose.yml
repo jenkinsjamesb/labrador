@@ -15,24 +15,17 @@ services:
     container_name: jellyfin
     network_mode: 'host'
     volumes:
-      - /mnt/media/jellyfin-config:/config
-      - /mnt/media/jellyfin-cache:/cache
-      - $JELLYFIN_MEDIA_PATH:/media
+      - $JELLYFIN_MEDIA_PATH/config:/config
+      - $JELLYFIN_MEDIA_PATH/cache:/cache
+      - $JELLYFIN_MEDIA_PATH/media:/media
     restart: 'unless-stopped'
-  nextcloud-aio:
-    container_name: nextcloud-aio-mastercontainer
+  filebrowser:
+    image: filebrowser/filebrowser
+    user: "${UID}:${GID}"
     ports:
-        - 80:80
-        - 8080:8080
-        - 8443:8443
+      - 8080:80
     volumes:
-        - nextcloud_aio_mastercontainer:/mnt/docker-aio-config
-        - /var/run/docker.sock:/var/run/docker.sock:ro
-    environment:
-        NEXTCLOUD_DATADIR: $NEXTCLOUD_DATADIR
-    image: nextcloud/all-in-one:latest
+      - $FILESHARE_DATA_PATH/srv:/srv
+      - $FILESHARE_DATA_PATH/database.db:/database.db
+      - $FILESHARE_DATA_PATH/.filebrowser.json:/.filebrowser.json
     restart: always
-    
-volumes:
-  nextcloud_aio_mastercontainer:
-    name: nextcloud_aio_mastercontainer
