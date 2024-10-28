@@ -1,4 +1,6 @@
 #!/bin/bash
+BASEDIR=$(dirname "$0")
+(cd $BASEDIR/$1 && 
 sudo docker system prune -fa
-sudo docker compose -f ~/labrador/$1/$1-compose.yml --env-file ~/labrador/.env pull
-sudo docker compose -f ~/labrador/$1/$1-compose.yml --env-file ~/labrador/.env up
+sudo docker compose pull
+sudo docker compose up)
