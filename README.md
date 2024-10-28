@@ -83,13 +83,14 @@ OPNsense is my choice of routing software, as it supports VLANs and allows me to
 
 ### to do (in no particular order):
 
-- ~~Configure Traefik as a reverse proxy to assign subdomains to services.~~ I've nginx for reverse proxying, which is very easy and has few drawbacks. Documentation is on the way.
+- ~~Configure Traefik as a reverse proxy to assign subdomains to services.~~ I've set up nginx for reverse proxying, which is very easy and has few drawbacks. Documentation is on the way.
 - Add and configure Homer for a clean homelab landing page.
-- ~~Get rid of the hosting subdirectory, and document some better ways to host miscellaneous services.~~ Hosting has been thrown out for the time being, although I'd like to eventually return to Docker as a hosting solution for portability reasons, and because Windows Server is very imperfect. Practice for containerization, perhaps.
+- ~~Get rid of the hosting subdirectory, and document some better ways to host miscellaneous services.~~ Hosting has been thrown out for the time being, although I'd like to eventually return to Docker as a hosting solution for portability reasons, and because Windows Server is very imperfect. Practice for containerization, perhaps. I'd also like to host my website through this Docker host.
 - ~~Drop NextCloud and replace with something simpler and easier to deploy.~~ I've moved over to Filebrowser, which is lightweight, needs very little configuration, and works pretty flawlessly on everything I've accessed it through. Everything a cloud file service should be.
 - Document VLAN setup and management for an isolated homelab network.
 - Find a cheap 4u rackmount case and add more compute power to the cluster.
 - ~~Think about some other options for bare metal, look into Warewulf.~~ Warewulf is for HPC. Proxmox is great, at least for the time being. No action needed unless license changes occur.
 - Figure out another method for storage other than TrueNAS, maybe an NFS hosted on a node. Or, relegate Proxmox to a smaller number of physical disks and let TrueNAS handle the physical disks directly as it's meant to.
 - Switch to a RHEL-based server or Debian server OS for Docker hosts.
+- More in-depth READMEs for each subdirectory.
 - Better (more?) dog pictures :)
