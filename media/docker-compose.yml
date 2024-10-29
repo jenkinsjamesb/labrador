@@ -13,7 +13,8 @@ services:
   jellyfin:
     image: jellyfin/jellyfin
     container_name: jellyfin
-    network_mode: host
+    ports:
+      - 8096:8096
     volumes:
       - $JELLYFIN_DATA_PATH/config:/config
       - $JELLYFIN_DATA_PATH/cache:/cache
@@ -40,7 +41,4 @@ services:
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 80:80
-    depends_on:
-      - jellyfin
-      - filebrowser
     restart: always
