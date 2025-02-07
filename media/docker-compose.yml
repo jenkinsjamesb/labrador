@@ -9,7 +9,7 @@ services:
     ports:
       - 9001:9001
     restart: always
-  
+
   jellyfin:
     image: jellyfin/jellyfin
     container_name: jellyfin
@@ -19,15 +19,6 @@ services:
       - $JELLYFIN_DATA_PATH/config:/config
       - $JELLYFIN_DATA_PATH/cache:/cache
       - $JELLYFIN_DATA_PATH/media:/media
-    # OPTIONAL: enable nvidia GPU usage for transcoding
-    runtime: nvidia
-    deploy:
-      resources:
-        reservations:
-          devices:
-            - driver: nvidia
-              count: all
-              capabilities: [gpu]
     restart: always
 
   filebrowser:
