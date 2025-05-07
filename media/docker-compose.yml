@@ -16,7 +16,7 @@ services:
     ports:
       - 8096:8096
     volumes:
-      - $JELLYFIN_DATA_PATH/config:/config
+      - ./jellyfin-config:/config
       - $JELLYFIN_DATA_PATH/cache:/cache
       - $JELLYFIN_DATA_PATH/media:/media
     restart: always
