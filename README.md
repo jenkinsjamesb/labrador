@@ -13,13 +13,13 @@ The hostnames of each server are set in /etc/hosts & /etc/hostname, and static I
 
 ### what (and how) are we deploying?
 
-Labrador is the nickname of a Proxmox cluster of 2 Dell PowerEdge R620s, providing a pool of 64 threads, 256 GiB of RAM, around 6TiB of usuable storage in RAID 5, and 2 Nvidia Quadro K1200s for good measure. This is beyond overkill, and could likely be done with one or two SBCs, but I like to keep it futureproof.
+Labrador is the nickname of a Proxmox cluster of a Dell PowerEdge R620 and R540, providing a pool of 64 threads, ~600 GiB of RAM, around 7TiB of usuable storage in RAID 5, and 2 Nvidia Quadro K1200s for good measure. This is beyond overkill, and could likely be done with one or two SBCs, but I like to keep it futureproof.
 
 The subdirectories provided each correspond to a cloned docker host, a VM running Ubuntu Server LTS configured with hostnames matching their directories and their static IPv4 address' least significant bits match their VM IDs in Proxmox (e.g. the media directory docker config is running on VM 102 "labrador-media" @ xxx.xxx.xxx.102). Other self-hosting methods are used, however, such as a TrueNAS Scale VM for managing large blocks of storage, an OPNSense VM providing networking services, and a Windows Server VM hosting various game servers.
 
-The subdirectories each contain a docker-compose.yml file which configures a specific set of services for that host. The docker containers can be easily re-pulled and started with the correct compose file and environment with ./start.sh &lt;subdirectory&gt;. A single global .env file is provided with the lab suite as the philosophy of the lab is such that the number of environment values should be minimal and the names should be descriptive enough to be easily distinguishable out of context.
+The subdirectories each contain a docker-compose.yml file which configures a specific set of services for that host. The docker containers can be easily re-pulled and started with the correct compose file and environment with ./start.sh &lt;subdirectory&gt;. Each subdirectory contains a .env.sample file that provides the necessary options to configure your own host where applicable. This isn't the only configuration however, and you will need to occasionally create a config file for a specific service if you choose.
 
-The Docker hosts are configured with networking information in /etc/hosts, /etc/hostname, and /etc/netplan/00-installer-config.yaml, /etc/fstab entries to mount the necessary remote storage, and a crontab entry that automatically invokes start.sh with the correct subdirectory @reboot, as well as a crontab entry to periodically remount storage, as it is likely for the Docker hosts to finish rebooting before TrueNAS, resulting in the network drives being unmounted and thus inaccessible.
+The Docker hosts are configured with networking information in /etc/hosts, /etc/hostname, and /etc/netplan/00-installer-config.yaml, /etc/fstab entries to mount the necessary NAS storage, and a crontab entry that automatically invokes start.sh with the correct subdirectory @reboot, as well as a crontab entry to periodically remount storage, as it is likely for the Docker hosts to finish rebooting before TrueNAS, resulting in the network drives being unmounted and thus inaccessible.
 
 ##### netplan config:
 
@@ -53,7 +53,7 @@ network:
 
 ### list of services
 
-##### storage (truenas @ 100 - TrueNAS Scale)
+##### storage (truenas @ 105 - TrueNAS Scale)
 
 This TrueNAS VM provides easier management of bulk storage for various services, allowing the growing and shrinking of allocated storage space (e.g. a media drive) without having to expand filesystem partitions and manage drives through Proxmox. While slower, using Samba shares through TrueNAS makes accessing and maintaining important data much easier.
 
@@ -79,7 +79,7 @@ The testenv VM is simply a remote development and testing environment used for s
 
 ##### opnsense (opnsense @ 192 - OPNsense)
 
-OPNsense is my choice of routing software, as it supports VLANs and allows me to use my cheap TPLink router as a simple access point, while leveraging OPNsense's rich featureset to do all of the important stuff. While it has a learning curve, it's certainly worth the effort for the homelab environment.
+OPNsense is my choice of routing software, as it supports VLANs and allowed me to use my cheap TPLink router as a simple access point, while leveraging OPNsense's rich featureset to do all of the important stuff. While it has a learning curve, it's certainly worth the effort for the homelab environment. Now that I have a Unifi stack, this is less necessary, but OPNSense is still great.
 
 ### to do (in no particular order):
 
