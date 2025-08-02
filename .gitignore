@@ -2,3 +2,7 @@
 */.env
 
 hosting
+
+media/jellyfin-config/*
+media/copyparty-cfg/*
+media/database.db
