@@ -1,0 +1,18 @@
+services:
+
+  tailscaled:
+    container_name: tailscaled
+    image: tailscale/tailscale:latest
+    network_mode: host
+    environment:
+      - TS_AUTH_ONCE=true
+      - TS_AUTHKEY=${TS_AUTHKEY}
+      - TS_ROUTES=${TS_ROUTES}
+      - TS_EXTRA_ARGS=--advertise-exit-node
+    cap_add:
+      - NET_ADMIN
+    volumes:
+      - /var/lib:/var/lib
+      - /var/lib/tailscale:/var/lib/tailscale
+      - /dev/net/tun:/dev/net/tun
+    restart: always

@@ -1,0 +1,24 @@
+services:
+
+  jellyfin:
+    image: jellyfin/jellyfin
+    container_name: jellyfin
+    ports:
+      - 8096:8096
+    volumes:
+      - ./jellyfin-config:/config
+      - $JELLYFIN_DATA_PATH/cache:/cache
+      - $JELLYFIN_DATA_PATH/media:/media
+    restart: always
+
+  copyparty:
+    container_name: copyparty
+    image: copyparty/ac
+    ports:
+      - 8086:8086
+      - 3923:3923
+    volumes:
+      - $COPYPARTY_DATA_PATH:/w
+      - ./copyparty-cfg:/cfg
+    command: "--hist /cfg"
+    restart: always
