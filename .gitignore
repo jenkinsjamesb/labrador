@@ -1,8 +1,8 @@
 .env
-*/.env
 
-hosting
+bacchus/jellyfin-config/*
+bacchus/copyparty-cfg/*
+!party.conf
 
-media/jellyfin-config/*
-media/copyparty-cfg/*
-media/database.db
+janus/nginx/*
+!nginx.conf
