@@ -1,0 +1,26 @@
+services:
+  mc:
+    container_name: mc
+    image: itzg/minecraft-server:latest
+    tty: true
+    stdin_open: true
+    ports:
+      - "25565:25565"
+    environment:
+      EULA: "TRUE"
+      VERSION: "SNAPSHOT"
+      MEMORY: "32768M"
+      MAX_PLAYERS: "10"
+      ENABLE_WHITELIST: "true"
+      MOTD: "Dinkle"
+      USE_AIKAR_FLAGS: "true"
+      USE_MEOWICE_FLAGS: "true"
+      TZ: "America/New_York"
+      DIFFICULTY: "3"
+      ENTITY_BROADCAST_RANGE_PERCENTAGE: "150"
+      SIMULATION_DISTANCE: "16"
+      VIEW_DISTANCE: "16"
+      REGION_FILE_COMPRESSION: "lz4"
+    volumes:
+      - "./data:/data"
+    restart: unless-stopped
