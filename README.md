@@ -1,96 +1,106 @@
-![Maintenance Status](https://img.shields.io/badge/Maintained%3F-yes-green.svg)
-
 # Labrador
 
 <img src="https://jenkinsjamesb.github.io/src/images/zeke.jpg" width="33%"><img src="https://jenkinsjamesb.github.io/src/images/heep.jpg" width="33%"><img src="https://jenkinsjamesb.github.io/src/images/luke.jpg" width="33%">
 
 ---
 
-### overview
+### Overview
 
-Repository of the docker components and documentation of my current homelab setup, cloned onto each Docker host in ProxmoxVE, with a crontab addition in each invoking start.sh at reboot.
-The hostnames of each server are set in /etc/hosts & /etc/hostname, and static IPs are set in the file in /etc/netplan/. The goal of this repository is to provide a portable template for building out a homelab virtual environment, as well as to provide documentation on some of the nitty gritties of the setup process.
+Repository of the Docker components and documentation of my current homelab setup, cloned onto each applicable virtual host, with a focus on few simple, practical services.
 
-### what (and how) are we deploying?
+The hostnames of each server are set with hostnamectl, and static IPs are set in the file with nmtui. The goal of this repository is to provide a portable template for building out a homelab virtual environment, as well as to provide documentation on some of the nitty gritties of the setup process.
 
-Labrador is the nickname of a Proxmox cluster of a Dell PowerEdge R620 and R540, providing a pool of 64 threads, ~600 GiB of RAM, around 7TiB of usuable storage in RAID 5, and 2 Nvidia Quadro K1200s for good measure. This is beyond overkill, and could likely be done with one or two SBCs, but I like to keep it futureproof.
+### What (and how) are we deploying?
 
-The subdirectories provided each correspond to a cloned docker host, a VM running Ubuntu Server LTS configured with hostnames matching their directories and their static IPv4 address' least significant bits match their VM IDs in Proxmox (e.g. the media directory docker config is running on VM 102 "labrador-media" @ xxx.xxx.xxx.102). Other self-hosting methods are used, however, such as a TrueNAS Scale VM for managing large blocks of storage, an OPNSense VM providing networking services, and a Windows Server VM hosting various game servers.
+Labrador is the nickname of a Proxmox cluster with a Dell PowerEdge R620 and R540, providing a pool of 64 threads, ~600 GiB of RAM, around 7TiB of usuable storage in RAID 5, and 2 Nvidia Quadro K1200s for good measure. This is beyond overkill, and could likely be done with one or two SBCs, but I like to keep it futureproof.
 
-The subdirectories each contain a docker-compose.yml file which configures a specific set of services for that host. The docker containers can be easily re-pulled and started with the correct compose file and environment with ./start.sh &lt;subdirectory&gt;. Each subdirectory contains a .env.sample file that provides the necessary options to configure your own host where applicable. This isn't the only configuration however, and you will need to occasionally create a config file for a specific service if you choose.
+The subdirectories provided each correspond to a cloned Docker host, a VM running Rocky Linux 10 configured with hostnames matching their directories. Other self-hosting methods are used, however, such as a TrueNAS Scale VM for managing large blocks of storage, an OPNSense VM providing networking services, etc. These will be covered alongside the container hosts.
 
-The Docker hosts are configured with networking information in /etc/hosts, /etc/hostname, and /etc/netplan/00-installer-config.yaml, /etc/fstab entries to mount the necessary NAS storage, and a crontab entry that automatically invokes start.sh with the correct subdirectory @reboot, as well as a crontab entry to periodically remount storage, as it is likely for the Docker hosts to finish rebooting before TrueNAS, resulting in the network drives being unmounted and thus inaccessible.
+The subdirectories each contain a docker-compose.yml file which configures a specific set of services for that host. The Docker containers can be easily pulled and started with the correct compose file and environment using `docker compose up`. Each subdirectory contains a .env.sample file that provides the necessary options to configure your own host where applicable. This isn't the only configuration however, and you will need to occasionally create a config file or setup a directory for a specific service if you choose.
 
-##### netplan config:
+### Network storage
 
-```
-network:
-  version: 2
-  renderer: networkd
-  ethernets:
-    ens18:
-      dhcp4: no
-      addresses:
-        - <ipv4-host-CIDR>
-      routes:
-        - to: default
-          via: <ipv4-router>
-      nameservers:
-        addresses: [<DNS-server-list>]
-```
-          
+As systems like TrueNAS make managing lots of storage safely easy, they are an attractive option for storing important bulk information like media and Git repositories. However, to use this in conjunction with other Proxmox VMs, an entry must be made in /etc/fstab to mount any network shares you need to use.
+
 ##### fstab example entry:
 
 ```
 //<ipv4-storageserver>/jellyfin-media /media/jellyfin-media cifs username=<user>,password=<password>,iocharset=utf8,uid=<uid> 0 0
 ```
   
-##### example crontab:
+### Hosts & services
 
-```
-@reboot ~/labrador/start.sh <subdir>
-```
-
-### list of services
-
-##### storage (truenas @ 105 - TrueNAS Scale)
-
-This TrueNAS VM provides easier management of bulk storage for various services, allowing the growing and shrinking of allocated storage space (e.g. a media drive) without having to expand filesystem partitions and manage drives through Proxmox. While slower, using Samba shares through TrueNAS makes accessing and maintaining important data much easier.
-
-##### management (labrador-manager @ 101 - Ubuntu Server/Docker)
-
-The manager for Labrador provides mission-critical services for tending the homelab. Most notably, Tailscale allows for remote access from any device. This still relies on Tailscale servers and services however, so a fully self-hosted solution may become necessary in future. Additionally, Portainer is deployed to easily access and control containers on the various Docker hosts across the lab, and Grafana and GraphiteDB are used for metrics collection and monitoring. 
-
-##### media (labrador-media @ 102 - Ubuntu Server/Docker)
-
-The media Docker host runs both Jellyfin and Nextcloud AIO alongside Portainer Agent. Jellyfin provides a rich feature set and is FOSS in contrast to the typical Plex home media server, which is why it's used here. Nextcloud AIO is the current cloud storage solution in use, although it has its fair share of setup headaches and issues and may be swapped for OwnCloud or SeaFile.
-
-##### hosting (labrador-hosting @ 103 - Windows Server)
-
-This server provides general-purpose hosting for services that don't play nicely with Docker. This tends to be used for game servers (e.g. Minecraft, DayZ, Single-Player Tarkov).
-
-##### failover (labrador-failover @ 104 - Ubuntu Server)
-
-Failovers are an important part of high availability computing, and perhaps the most critical component of my homelab is the Tailscale subnet router that provides remote access to the labrador VLAN. As such, a failover instance of Tailscale is hosted on this server to provide a fallback if the primary container fails (or, more likely, I break it while not at home ;)).
-
-##### testenv (labrador-testenv @ 123 - Ubuntu Desktop)
-
-The testenv VM is simply a remote development and testing environment used for school assignments and any other software projects, allowing me to develop from any device (even an iPad) and transition seamlessly between devices without needing to go through a git repository or other file sharing service.
-
-##### opnsense (opnsense @ 192 - OPNsense)
+##### portunus - OPNsense
 
 OPNsense is my choice of routing software, as it supports VLANs and allowed me to use my cheap TPLink router as a simple access point, while leveraging OPNsense's rich featureset to do all of the important stuff. While it has a learning curve, it's certainly worth the effort for the homelab environment. Now that I have a Unifi stack, this is less necessary, but OPNSense is still great.
 
-### to do (in no particular order):
+##### consus - TrueNAS Scale
 
-- ~~Configure Traefik as a reverse proxy to assign subdomains to services.~~ I've set up nginx for reverse proxying, which is very easy and has few drawbacks. Documentation is on the way.
-- Add and configure Homer for a clean homelab landing page.
-- ~~Get rid of the hosting subdirectory, and document some better ways to host miscellaneous services.~~ Hosting has been thrown out for the time being, although I'd like to eventually return to Docker as a hosting solution for portability reasons, and because Windows Server is very imperfect. Practice for containerization, perhaps. I'd also like to host my website through this Docker host.
-- ~~Drop NextCloud and replace with something simpler and easier to deploy.~~ I've moved over to Filebrowser, which is lightweight, needs very little configuration, and works pretty flawlessly on everything I've accessed it through. Everything a cloud file service should be.
-- Document VLAN setup and management for an isolated homelab network.
-- Find a cheap 4u rackmount case and add more compute power to the cluster.
-- ~~Think about some other options for bare metal, look into Warewulf.~~ Warewulf is for HPC. Proxmox is great, at least for the time being. No action needed unless license changes occur.
-- Figure out another method for storage other than TrueNAS, maybe an NFS hosted on a node. Or, relegate Proxmox to a smaller number of physical disks and let TrueNAS handle the physical disks directly as it's meant to.
-- Switch to a RHEL-based server or Debian server OS for Docker hosts.
-- More in-depth READMEs for each subdirectory.
-- Better (more?) dog pictures :)
+This TrueNAS VM provides easier management of bulk storage for various services, allowing the growing and shrinking of allocated storage space (e.g. a media drive) without having to expand filesystem partitions and manage drives through Proxmox. While slower, using Samba shares through TrueNAS makes accessing and maintaining important data much easier.
+
+##### vesta - Home Assistant OS
+
+Home Assistant is pretty great and pretty hands-off. If you have interest in home automation, I would recommend spinning up a VM from the good folks over at [helper-scripts](https://github.com/community-scripts/ProxmoxVE).
+
+##### janus - Rocky Linux
+
+The manager for Labrador provides mission-critical services for tending the homelab. Most notably, Tailscale allows for remote access from any device. This still relies on Tailscale servers and services however, so a fully self-hosted solution may become necessary in future. Additionally, Portainer is deployed to easily access and control containers on the various Docker hosts across the lab, and Grafana and GraphiteDB are used for metrics collection and monitoring. 
+
+##### bacchus - Rocky Linux
+
+The media Docker host runs both Jellyfin and Copyparty. I prefer Jellyfin to the typical Plex home media server, which is why it's used here. Copyparty is a simple and effective means of hosting basic file storage for all of your devices, so I recommend setting it up (think Google Drive but good).
+
+##### somnus - Rocky Linux
+
+This VM is for general-purpose internet-shared hosting. This tends to be used for game servers (e.g. Minecraft, DayZ, Single-Player Tarkov).
+
+##### vulcan - Rocky Linux
+
+The vulcan VM provides a source control server using its namesake forgeware, [Vulcan](https://github.com/jenkinsjamesb/vulcan).
+
+##### averruncus - Rocky Linux
+
+Failovers are an important part of high availability computing, and perhaps the most critical component of my homelab is the Tailscale subnet router that provides remote access to the Labrador VLAN. As such, a failover instance of Tailscale is hosted on this server to provide a fallback if the primary container fails (or, more likely, I break it while not at home ;)).
+
+##### fontus - Ubuntu Desktop
+
+This VM is simply a remote development and testing environment used for school assignments and any other software projects, allowing me to develop from any device (even an iPad) and transition seamlessly between devices without needing to go through a git repository or other file sharing service.
+
+### Exposing services
+
+One thing you will likely want to do with your homelab is access it from outside its network. If you have the ability and desire, you can punch a hole in your firewall and go crazy. I do not recommend this. Instead, I use a combination of two services:
+
+##### Cloudflare tunnel
+
+For "truly" externally accessible services I use cloudflared running on janus to create a link to Cloudflare, which manages my domain, [jenkinsjamesb.xyz](jenkinsjamesb.xyz). From there, a couple things are configured:
+
+1. A CNAME record is created pointing the desired host to the tunnel.
+2. In the Zero Trust tunnel settings, a published application route is created that forwards tunnel traffic (*.jenkinsjamesb.xyz) to https://<janus-ip>, which is served by nginx.
+3. In domain settings, TLS is configured to strict, and origin and client certificates are generated. Nginx uses the origin certificates to secure cloudflare-lab traffic, and the client cert is installed on my devices to grant access to private services. 
+4. In the client certificate settings, mTLS is enabled for *.jenkins.jamesb.xyz 
+5. In security rules, a rule is created to enforce mTLS on non www domains. This looks like:
+
+```
+IF
+        Client Certificate Verified IS False
+        AND
+        Hostname DOES NOT CONTAIN www
+
+THEN
+
+        BLOCK
+```
+
+6. In nginx.conf, a server block points to the desired service based on hostname.
+
+This allows your individual lab services to be accessible remotely and securely with little more hassle than the client cert installation. Hooray!
+
+##### Tailscale
+
+But say you want to access everything in the lab network. That's great for getting work done on the go, but getting *everything* out through Clouflare would be a real mess. Instead, I reccommend setting up a Tailscale subnet router. This is so easy I don't even feel the need to explain it here, and gives you a VPN that you can use to access your home network from anywhere.
+
+##### Network
+
+When all is said and done, the network for lab traffic looks a little something like this:
+
+![](https://jenkinsjamesb.github.io/src/images/labnet.png)
