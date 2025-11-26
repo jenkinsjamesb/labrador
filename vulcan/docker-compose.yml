@@ -1,0 +1,21 @@
+services:
+  registry:
+    container_name: registry
+    image: registry
+    volumes:
+      - ${REGISTRY_STORAGE}:/var/lib/registry
+    ports:
+      - 5000:5000
+    restart: always
+
+  vulcan:
+    container_name: vulcan
+    image: registry:5000/vulcan
+    volumes:
+      - ${VULCAN_STORAGE}:/home/git
+      - ./authorized_keys:/home/git/.ssh/authorized_keys
+    ports:
+      - 2222:22
+      - 8888:80
+      - 9418:9418
+    restart: unless-stopped
