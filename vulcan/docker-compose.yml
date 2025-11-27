@@ -1,7 +1,21 @@
 services:
+  registry-pub:
+    container_name: registry-pub
+    image: registry
+    environment:
+      - OTEL_TRACES_EXPORTER=none
+      - REGISTRY_STORAGE_MAINTENANCE_READONLY_ENABLED=true
+    volumes:
+      - ${REGISTRY_STORAGE}:/var/lib/registry
+    ports:
+      - 5001:5000
+    restart: unless-stopped
+
   registry:
     container_name: registry
     image: registry
+    environment:
+      - OTEL_TRACES_EXPORTER=none
     volumes:
       - ${REGISTRY_STORAGE}:/var/lib/registry
     ports:
