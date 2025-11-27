@@ -1,4 +1,13 @@
 services:
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - 5001:5001
+    restart: always
+  
   registry:
     container_name: registry
     image: registry
@@ -6,8 +15,6 @@ services:
       - OTEL_TRACES_EXPORTER=none
     volumes:
       - ${REGISTRY_STORAGE}:/var/lib/registry
-    ports:
-      - 5000:5000
     restart: always
 
   vulcan:
