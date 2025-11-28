@@ -19,7 +19,7 @@ services:
 
   vulcan:
     container_name: vulcan
-    image: registry:5000/vulcan
+    image: registry.jenkinsjamesb.xyz/vulcan
     volumes:
       - ${VULCAN_STORAGE}:/home/git
       - ./authorized_keys:/home/git/.ssh/authorized_keys
