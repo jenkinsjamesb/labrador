@@ -25,6 +25,6 @@ services:
       - ./authorized_keys:/home/git/.ssh/authorized_keys
     ports:
       - 2222:22
-      - 8888:80
+      - 8080:80
       - 9418:9418
     restart: unless-stopped
