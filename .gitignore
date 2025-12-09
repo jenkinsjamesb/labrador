@@ -6,3 +6,5 @@ bacchus/copyparty-cfg/*
 
 janus/nginx/*
 !nginx.conf
+
+authorized_keys
