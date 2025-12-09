@@ -29,6 +29,6 @@ services:
     volumes:
       - ./nginx:/etc/nginx
     ports:
-      - 22:22
+      - 2222:22
       - 443:443
     restart: always
