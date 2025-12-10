@@ -4,6 +4,7 @@ services:
     image: nginx:latest
     volumes:
       - ./nginx.conf:/etc/nginx/nginx.conf
+      - ./registry.htpasswd:/etc/nginx/registry.htpasswd
     ports:
       - 5001:5001
     restart: always
